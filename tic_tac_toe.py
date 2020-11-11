@@ -2,39 +2,49 @@
 # Andrew Smetana
 # 11/9/2020
 
-#-----Global Variables--------
+# -----Global Variables--------
 
-board = ["-","-","-",
-         "-","-","-",
-         "-","-","-"]
+board = ["-", "-", "-",
+         "-", "-", "-",
+         "-", "-", "-"]
+play_new_game = True
 game_still_going = True
 winner = "None"
 current_player = 'X'
 
-#--------------------------------------------
+# --------------------------------------------
 
 def play_game():
-    display_board()
+    # Used to determine if they user wants to keep playing after finishing a game
+    while play_new_game:
 
-    while game_still_going:
+        display_board()
 
-        handle_turn(current_player)
+        # Used to run through game sequence until win or tie is identified
+        while game_still_going:
 
-        check_if_game_over()
+            handle_turn(current_player)
 
-        flip_player()
+            check_if_game_over()
 
-    #The Game is Over. Display who won or Tie.
-    global winner
-    if winner == "None":
-        print("Game ended in a Tie")
-    else:
-        print("Player " + winner + " won the game!")
+            flip_player()
+
+        # The Game is Over. Win or Tie.
+        global winner
+        if winner == "None":
+            print("Game ended in a Tie")
+        else:
+            print("Player " + winner + " won the game!")
+            #Play again?
+            play_new_game()
+
 
 def display_board():
+    # Displays board in 3x3 layout
     print(board[0] + " | " + board[1] + " | " + board[2])
     print(board[3] + " | " + board[4] + " | " + board[5])
     print(board[6] + " | " + board[7] + " | " + board[8])
+
 
 def handle_turn(player):
     position = input("Player " + player + ". Choose a position from 1-9: ")
@@ -61,6 +71,7 @@ def handle_turn(player):
 
 
 def check_if_game_over():
+    # After every entry, game checks for 3 in a row of the same symbol
     check_for_winner()
     check_for_tie()
 
@@ -88,6 +99,7 @@ def check_for_winner():
         game_still_going = False
         winner = current_player
 
+
 def check_for_tie():
     global game_still_going
     # Checks to see if any blank spaces remain on board
@@ -102,5 +114,31 @@ def flip_player():
     elif current_player == 'O':
         current_player = 'X'
 
-#------MAIN--------
+
+def play_new_game():
+    global play_new_game
+    # After game is over, ask if they would like to play again
+    cont = input("Type 1 to play again. Type anything else to quit.")
+    if cont != "1":
+        play_new_game = False
+    else:
+        reset_board()
+
+
+def reset_board():
+    global board
+    global game_still_going
+    global winner
+    global current_player
+    # If they want to play again, reset board
+    board = ["-", "-", "-",
+             "-", "-", "-",
+             "-", "-", "-"]
+    game_still_going = True
+    winner = "None"
+    current_player = 'X'
+
+
+# ------MAIN--------
+
 play_game()
